@@ -278,6 +278,7 @@ GameObject:
   - component: {fileID: 1867792180}
   - component: {fileID: 1867792179}
   - component: {fileID: 1867792178}
+  - component: {fileID: 4943970367218917730}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -292,13 +293,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1867792176}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.989, z: 0.007}
-  m_LocalScale: {x: 0.48, y: 0.36, z: 0.39}
+  m_LocalRotation: {x: 0.50000364, y: -0.50000316, z: -0.49999765, w: -0.49999565}
+  m_LocalPosition: {x: -0.13745268, y: -0.025378307, z: 0}
+  m_LocalScale: {x: 0.47999993, y: 0.35999987, z: 0.38999984}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 329449256491777524}
-  m_RootOrder: 2
+  m_Father: {fileID: 329449256491777034}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &1867792180
 MeshFilter:
@@ -328,7 +329,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7459fb80bfebaeb40b895e5d22cb6dee, type: 2}
+  - {fileID: 2100000, guid: 8c81fff7b8d5f2b41ae0cd4e8bc34db0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -359,10 +360,25 @@ BoxCollider:
   m_GameObject: {fileID: 1867792176}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &4943970367218917730
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1867792176}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f47920208dc160846a0396a7d68bc6c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cube: {fileID: 1867792176}
+  serverMaterial: {fileID: 2100000, guid: 7459fb80bfebaeb40b895e5d22cb6dee, type: 2}
+  clientMaterial: {fileID: 2100000, guid: 8c81fff7b8d5f2b41ae0cd4e8bc34db0, type: 2}
 --- !u!1 &2040117443
 GameObject:
   m_ObjectHideFlags: 0
@@ -876,6 +892,11 @@ MonoBehaviour:
   isUsed: 0
   leftHandPositionWeight: 0
   leftHandRotationWeight: 0
+--- !u!4 &329449256491777034 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 400204, guid: e57e9b8cd5e115f4f8d7736473e5c7fd, type: 3}
+  m_PrefabInstance: {fileID: 329449256491640646}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &329449256491777514 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400044, guid: e57e9b8cd5e115f4f8d7736473e5c7fd, type: 3}
