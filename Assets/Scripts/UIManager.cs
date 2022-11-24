@@ -13,16 +13,27 @@ public class UIManager : MonoBehaviour
     [SerializeField] GameObject UImanage;
     [SerializeField] GameObject shutDown;
     [SerializeField] Button leaveButton;
+
+    [SerializeField] GameObject PlayerUI;
+    [SerializeField] InputField joinCode;
     // Start is called before the first frame update
     void Start()
     {
-        hostButton.onClick.AddListener(() =>
+        hostButton.onClick.AddListener(async () =>
         {
+            if (RelayManager.instance.IsRelayEnabled)
+            {
+                await RelayManager.instance.SetupRelay();
+            }
             NetworkManager.Singleton.StartHost();
             UImanage.SetActive(false);
-            //shutDown.SetActive(true);
-            Debug.Log("Host Connected");
-            //CameraFollow.instance.GameStart();
+            //PlayerUI.SetActive(true);
+
+            Logger.Instance.LogInfo("Host Connected");
+            
+            
+
+                
         });
 
         serverButton.onClick.AddListener(() =>
@@ -32,13 +43,16 @@ public class UIManager : MonoBehaviour
             shutDown.SetActive(true);
         });
 
-        clientButton.onClick.AddListener(() =>
+        clientButton.onClick.AddListener(async () =>
         {
+            if (RelayManager.instance.IsRelayEnabled && !string.IsNullOrEmpty(joinCode.text))
+                await RelayManager.instance.JoinRelay(joinCode.text);
+
             NetworkManager.Singleton.StartClient();
             //HealthBar.instance.CheckPlayerJoined();
             UImanage.SetActive(false);
             shutDown.SetActive(true);
-            Debug.Log("Client Connected");
+            Logger.Instance.LogInfo("Client Connected");
             HealthBar.instance.Condition();
 
         });

@@ -58,8 +58,9 @@ public class PlayerAttackSystem : NetworkBehaviour
         if (anim.GetCurrentAnimatorStateInfo(0).IsName("Attack") && anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.8f)
         {
             isAttacking = false;
+            playerMovement.StopAttacking();
         }
-        Attack();
+        
         playerIndex = OwnerClientId;
         SetReferenceForPlayer(leftHand.transform, Vector3.left); 
     }
@@ -69,44 +70,45 @@ public class PlayerAttackSystem : NetworkBehaviour
         CheckPunch(leftHand.transform, Vector3.left);
         CheckPunch(rightHand.transform, Vector3.left);
     }
-    private void Attack()
+    public void Attack()
     {
-        if (IsOwner)
+        if(IsOwner)
+        {          
+            anim.SetBool("StrafeForward", false);
+            networkAnim.SetTrigger("Attack");
+
+            isAttacking = true;
+            playerMovement.StartAttacking();         
+        }
+        
+    }
+    public void Block()
+    {
+        if(IsOwner)
+        {          
+             anim.SetBool("StrafeForward", false);
+             anim.SetBool("Block", true);
+
+             playerMovement.StartAttacking();
+             playerHealth.StartBlocking();  
+        }
+        
+    }
+    public void Cancel_Block_N_Attack()
+    {
+        if(IsOwner)
         {
-            if (Input.GetMouseButtonDown(0))
-            {
-                if(IsOwner)
-                {
-                    anim.SetBool("StrafeForward", false);
-                    networkAnim.SetTrigger("Attack");
-
-                    isAttacking = true;
-                    playerMovement.StartAttacking();
-                }
-                    
-            }
-            if (Input.GetMouseButton(1))
-            {
-                if (IsOwner)
-                {
-                    anim.SetBool("StrafeForward", false);
-                    anim.SetBool("Block", true);
-
-                    playerMovement.StartAttacking();
-                    playerHealth.StartBlocking();
-                }
-            }
-            if(Input.GetMouseButtonUp(1))
-            {
-                if(IsOwner)
-                {
-                    anim.SetBool("Block", false);
-                    playerMovement.StopAttacking();
-                    playerHealth.StopBlocking();
-                }                    
-            }
+            anim.SetBool("Block", false);            
+            playerHealth.StopBlocking();
         }
     }
+    public void StopBlocking()
+    {
+        anim.SetBool("Block", false);
+        playerHealth.StopBlocking();
+        playerMovement.StopAttacking();
+    }
+    
     public void SetReferenceForPlayer(Transform hand, Vector3 aimDirection)
     {
         RaycastHit hit;

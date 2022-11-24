@@ -23,6 +23,8 @@ public class HealthBar : NetworkBehaviour
 	[SerializeField] Slider enemyHealthBar;
 	[SerializeField] Image enemyFill;
 	ulong playerIndex;
+
+	[SerializeField] InputField joinCode;
 	
 	private void Awake()
 	{

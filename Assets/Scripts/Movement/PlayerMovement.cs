@@ -97,7 +97,9 @@ public class PlayerMovement : NetworkBehaviour
            
             float horizontal = Input.GetAxisRaw("Horizontal");
             float vertical = Input.GetAxisRaw("Vertical");
-            Vector3 direction = new Vector3(horizontal, 0f, vertical).normalized;
+            float h = UltimateJoystick.GetHorizontalAxis("Movement");
+            float v = UltimateJoystick.GetVerticalAxis("Movement");
+            Vector3 direction = new Vector3(h, 0f, v).normalized;
            
             if(direction.magnitude >= 0.1f && !isAttacking)
             {
