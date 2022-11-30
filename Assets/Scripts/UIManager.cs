@@ -3,19 +3,30 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Unity.Netcode;
-
-public class UIManager : MonoBehaviour
+using UnityEngine.SceneManagement;
+public class UIManager : NetworkBehaviour
 {
+    public static UIManager instance;
+
     [SerializeField] Button hostButton;
     [SerializeField] Button serverButton;
     [SerializeField] Button clientButton;
 
-    [SerializeField] GameObject UImanage;
-    [SerializeField] GameObject shutDown;
-    [SerializeField] Button leaveButton;
+    [SerializeField] GameObject endMenu;
+    [SerializeField] Button RestartButton;
+    [SerializeField] Button QuitButton;
 
+    [SerializeField] GameObject UImanage;
     [SerializeField] GameObject PlayerUI;
     [SerializeField] InputField joinCode;
+
+    private void Awake()
+    {
+        if(instance == null)
+        {
+            instance = this;
+        }
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -27,7 +38,7 @@ public class UIManager : MonoBehaviour
             }
             NetworkManager.Singleton.StartHost();
             UImanage.SetActive(false);
-            //PlayerUI.SetActive(true);
+            PlayerUI.SetActive(true);
 
             Logger.Instance.LogInfo("Host Connected");
             
@@ -40,7 +51,7 @@ public class UIManager : MonoBehaviour
         {
             NetworkManager.Singleton.StartServer();
             UImanage.SetActive(false);
-            shutDown.SetActive(true);
+           
         });
 
         clientButton.onClick.AddListener(async () =>
@@ -51,19 +62,33 @@ public class UIManager : MonoBehaviour
             NetworkManager.Singleton.StartClient();
             //HealthBar.instance.CheckPlayerJoined();
             UImanage.SetActive(false);
-            shutDown.SetActive(true);
+           
             Logger.Instance.LogInfo("Client Connected");
             HealthBar.instance.Condition();
 
         });
 
-        leaveButton.onClick.AddListener(() =>
+        RestartButton.onClick.AddListener(() =>
         {
             NetworkManager.Singleton.Shutdown();
             UImanage.SetActive(true);
-            shutDown.SetActive(false);
+            SceneManager.LoadScene(0);
         });
-    }
+        QuitButton.onClick.AddListener(() =>
+        {
+            Application.Quit();
+        });
 
+    }
+    public void Shutdown()
+    {
+        
+        NetworkManager.Singleton.Shutdown();
+        UImanage.SetActive(true);
+    }
+    public void ShowEndMenu()
+    {
+        endMenu.SetActive(true);
+    }
    
 }

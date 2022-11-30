@@ -4,6 +4,7 @@ using UnityEngine;
 using Unity.Netcode;
 using UnityEngine.UI;
 using Unity.Netcode.Components;
+using UnityEngine.SceneManagement;
 
 public class PlayerHealth : NetworkBehaviour
 {
@@ -12,13 +13,12 @@ public class PlayerHealth : NetworkBehaviour
     public NetworkVariable<int> networkHealth = new NetworkVariable<int>(100,NetworkVariableReadPermission.Everyone,NetworkVariableWritePermission.Server);
     public NetworkVariable<bool> isBlockingNEt = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
     HealthBar healthBar;
-    ulong playerIndex;
+    public ulong playerIndex;
 
     Animator anim;
     NetworkAnimator networkAnim;
 
-    //public bool serverBlocking = false;
-    //public bool clientBlocking = false;
+    bool playerDead = false;
     bool isblocking = false;
     public override void OnNetworkSpawn()
     {
@@ -28,6 +28,7 @@ public class PlayerHealth : NetworkBehaviour
             healthBar.SetMaxHealth(networkHealth.Value);
         }
     }
+    
     private void Awake()
     {
         
@@ -40,7 +41,9 @@ public class PlayerHealth : NetworkBehaviour
     }
     private void Update()
     {
-        playerIndex = OwnerClientId;        
+        playerIndex = OwnerClientId;
+        healthBar = FindObjectOfType<HealthBar>();
+
     }
     public void DamageEnemy(int damage)
     {     
@@ -55,9 +58,15 @@ public class PlayerHealth : NetworkBehaviour
                     networkAnim.SetTrigger("Hit");
                     SetHealthClientRPC(networkHealth.Value);
                 }
-                if(networkHealth.Value == 0)
+                if(networkHealth.Value <= 0)
                 {
-                    anim.SetBool("Die", true);
+                    
+                    playerDead = true;
+                    networkAnim.SetTrigger("Die");
+                    AttackCaller.Instance.CheckPlayerDiedServerRPC();
+                    AttackCaller.Instance.CheckPlayerDiedClientRPC();
+                    StartCoroutine(ShowEndMenu());
+                   
                 }
             } 
         }
@@ -71,7 +80,7 @@ public class PlayerHealth : NetworkBehaviour
         {  
             healthBar.SetPlayerHealth(health);
         }
-        if (playerIndex == 1)
+        if (playerIndex >= 1)
         {          
             healthBar.SetEnemyHealth(health);
         }
@@ -85,4 +94,28 @@ public class PlayerHealth : NetworkBehaviour
     {
         isblocking = false;
     }  
+   IEnumerator ShowEndMenu()
+    {
+        yield return new WaitForSeconds(5f);
+        if (IsServer)
+            EndClientRPC();
+
+        if (IsClient)
+            EndServerRPC();
+
+
+    }
+    [ServerRpc(RequireOwnership = false)]
+    public void EndServerRPC()
+    {
+        UIManager.instance.ShowEndMenu();
+        Debug.Log("workaaa");
+    }
+    [ClientRpc]
+    public void EndClientRPC()
+    {
+        UIManager.instance.ShowEndMenu();
+        Debug.Log("workaaa");
+    }
+
 }

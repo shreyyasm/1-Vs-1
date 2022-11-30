@@ -146,7 +146,7 @@ public class PlayerAttackSystem : NetworkBehaviour
                 {                  
                         CheckPunchServerSide(0);
                 }
-                if(playerIndex == 1)
+                if(playerIndex >= 1)
                 {
                         CheckPunchServerRPC();                 
                 }

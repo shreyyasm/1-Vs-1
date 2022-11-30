@@ -74,7 +74,8 @@ public class PlayerMovement : NetworkBehaviour
 
         playerIndex = OwnerClientId;
         if (playerIndex == 0)
-        {          
+        {
+            AttackCaller.Instance.ServerCheck();
             gameObject.tag = "Server";
             if (!clientSpawned)
             {
@@ -82,8 +83,9 @@ public class PlayerMovement : NetworkBehaviour
             }
 
         }
-        if (playerIndex == 1)
+        if (playerIndex >= 1)
         {
+            AttackCaller.Instance.ClientCheck();
             gameObject.tag = "Client";
             
         }
