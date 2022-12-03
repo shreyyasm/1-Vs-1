@@ -17,7 +17,7 @@ public class PlayerAttackSystem : NetworkBehaviour
     PlayerHealth playerHealth;
     private NetworkVariable<AttackSystem> messageString = new NetworkVariable<AttackSystem>(new AttackSystem {  },NetworkVariableReadPermission.Everyone,NetworkVariableWritePermission.Owner);
     
-    private float minPunchDistance = 1.5f;
+    private float minPunchDistance = 1.7f;
 
     [SerializeField]
     private GameObject leftHand;
@@ -31,6 +31,7 @@ public class PlayerAttackSystem : NetworkBehaviour
     NetworkAnimator networkAnim;
 
     [SerializeField] ulong playerIndex;
+    [SerializeField] CharacterController controller;
     struct AttackSystem : INetworkSerializable
     {
         public FixedString128Bytes message;
@@ -60,7 +61,10 @@ public class PlayerAttackSystem : NetworkBehaviour
             isAttacking = false;
             playerMovement.StopAttacking();
         }
-        
+
+        if (isAttacking)
+            controller.Move(Vector3.zero);
+
         playerIndex = OwnerClientId;
         SetReferenceForPlayer(leftHand.transform, Vector3.left); 
     }
@@ -88,9 +92,12 @@ public class PlayerAttackSystem : NetworkBehaviour
         {          
              anim.SetBool("StrafeForward", false);
              anim.SetBool("Block", true);
+             isAttacking = true;
 
-             playerMovement.StartAttacking();
-             playerHealth.StartBlocking();  
+            playerMovement.StartAttacking();
+
+            if(IsClient)
+                playerHealth.StartBlockingServerRPC();  
         }
         
     }
@@ -99,13 +106,13 @@ public class PlayerAttackSystem : NetworkBehaviour
         if(IsOwner)
         {
             anim.SetBool("Block", false);            
-            playerHealth.StopBlocking();
+            playerHealth.StopBlockingServerRPC();
         }
     }
     public void StopBlocking()
     {
         anim.SetBool("Block", false);
-        playerHealth.StopBlocking();
+        playerHealth.StopBlockingServerRPC();
         playerMovement.StopAttacking();
     }
     

@@ -9,11 +9,16 @@ using UnityEngine.UI;
 public class HealthBar : NetworkBehaviour
 {
 	public static HealthBar instance;
-	public Vector2 playerBarPos;
+
 	//public NetworkVariable<Vector2> playerbarPosition = new NetworkVariable<Vector2>(new Vector2(836,520), NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
 	//public NetworkVariable<Vector2> enemybarPosition = new NetworkVariable<Vector2>(new Vector2(159, 520), NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
 
-	public Vector2 enemyBarPos;
+	[SerializeField] GameObject playerText;
+	[SerializeField] GameObject enemyText;
+
+
+	[SerializeField] GameObject playerPos;
+	[SerializeField] GameObject enemyPos;
 
 	public Gradient gradient;
 
@@ -35,6 +40,8 @@ public class HealthBar : NetworkBehaviour
 		}
 		playerFill.color = gradient.Evaluate(1f);
 		enemyFill.color = gradient.Evaluate(1f);
+		playerText.transform.position = enemyPos.transform.position;
+		enemyText.transform.position = playerPos.transform.position;
 	}
     
     private void Update()
@@ -43,6 +50,7 @@ public class HealthBar : NetworkBehaviour
 		if(IsServer)
         {
 			HealthBarPosClientRPC();
+
 		}
 		if (IsClient)
 		{
@@ -85,15 +93,15 @@ public class HealthBar : NetworkBehaviour
 	public void HealthBarPosClientRPC()
     {
 
-		playerHealthBar.transform.position = playerBarPos;
-		enemyHealthBar.transform.position = enemyBarPos;
+		playerHealthBar.transform.position = playerPos.transform.position;
+		enemyHealthBar.transform.position = enemyPos.transform.position;
 	}
 	[ServerRpc(RequireOwnership = false)]
 	public void HealthBarPosServerRPC()
 	{
 		
-		playerHealthBar.transform.position = enemyBarPos;
-		enemyHealthBar.transform.position = playerBarPos;
+		playerHealthBar.transform.position = enemyPos.transform.position;
+		enemyHealthBar.transform.position = playerPos.transform.position;
 
 	}
 	private void SetEnemyHeathBar(ulong clientId)

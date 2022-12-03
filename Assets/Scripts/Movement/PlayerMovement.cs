@@ -60,7 +60,10 @@ public class PlayerMovement : NetworkBehaviour
         {
             SetClientPosition(0);
         }
-               
+    }
+    public void ClientConnected()
+    {
+        ClientHasSpawned();
     }
     private void Update()
     {
@@ -69,7 +72,10 @@ public class PlayerMovement : NetworkBehaviour
         {
             isAttacking = false;
         }
-        
+        if (clientSpawned)
+        {
+            controller.Move(Vector3.zero);
+        }
         Move();
 
         playerIndex = OwnerClientId;
@@ -120,6 +126,11 @@ public class PlayerMovement : NetworkBehaviour
             
             if (direction == Vector3.zero && !isAttacking)
             {
+                if(clientSpawned)
+                {
+                    controller.Move(Vector3.zero);
+                }
+                
                 anim.SetBool("StrafeForward", false);             
                 networkAnim.SetTrigger("Idle");
             }
@@ -128,6 +139,7 @@ public class PlayerMovement : NetworkBehaviour
     public void StartAttacking()
     {
         isAttacking = true;
+        
     }
     public void StopAttacking()
     {

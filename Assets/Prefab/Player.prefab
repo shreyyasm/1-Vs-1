@@ -571,7 +571,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4698289551157394553}
   - component: {fileID: 4698289551162868541}
-  - component: {fileID: 4698289551154390481}
   - component: {fileID: 4698289550075898367}
   - component: {fileID: 2680061552360506879}
   - component: {fileID: 2868857230246196476}
@@ -614,7 +613,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4698289551157616729}
   serializedVersion: 2
-  m_Mass: 7.9
+  m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
@@ -622,20 +621,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 116
   m_CollisionDetection: 0
---- !u!136 &4698289551154390481
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4698289551157616729}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  m_Radius: 0.5
-  m_Height: 2.8
-  m_Direction: 1
-  m_Center: {x: 0, y: 1.25, z: 0}
 --- !u!114 &4698289550075898367
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -693,7 +678,7 @@ MonoBehaviour:
   spawnPositionServer: {x: -15, y: 4, z: -1}
   spawnPositionClient: {x: 6, y: 4, z: 20}
   speed: 10
-  turnSmoothTime: 0.3
+  turnSmoothTime: 0.2
   cam: {fileID: 0}
   rotationSpeed: 360
   isAttacking: 0
@@ -734,6 +719,7 @@ MonoBehaviour:
   leftHand: {fileID: 329449256491606410}
   rightHand: {fileID: 329449256491606406}
   playerIndex: 0
+  controller: {fileID: 123054286919491143}
 --- !u!114 &3645101547618349729
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -775,6 +761,7 @@ MonoBehaviour:
     m_InternalValue: 100
   isBlockingNEt:
     m_InternalValue: 0
+  playerIndex: 0
 --- !u!143 &123054286919491143
 CharacterController:
   m_ObjectHideFlags: 0
@@ -786,13 +773,13 @@ CharacterController:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Height: 2.8
-  m_Radius: 0.53
+  m_Height: 2.83
+  m_Radius: 0.5
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 1.36, z: 0}
+  m_Center: {x: 0, y: 1.4, z: 0}
 --- !u!1001 &329449256491640646
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -874,6 +861,20 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 100050, guid: e57e9b8cd5e115f4f8d7736473e5c7fd, type: 3}
   m_PrefabInstance: {fileID: 329449256491640646}
   m_PrefabAsset: {fileID: 0}
+--- !u!136 &2670967238668653445
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 329449256491606420}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 2.77
+  m_Direction: 1
+  m_Center: {x: 0, y: 1.39, z: 0}
 --- !u!114 &4698289551419388305
 MonoBehaviour:
   m_ObjectHideFlags: 0

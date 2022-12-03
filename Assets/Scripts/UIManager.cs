@@ -59,6 +59,7 @@ public class UIManager : NetworkBehaviour
             if (RelayManager.instance.IsRelayEnabled && !string.IsNullOrEmpty(joinCode.text))
                 await RelayManager.instance.JoinRelay(joinCode.text);
 
+            //FindObjectOfType<PlayerMovement>().ClientHasSpawned();
             NetworkManager.Singleton.StartClient();
             //HealthBar.instance.CheckPlayerJoined();
             UImanage.SetActive(false);

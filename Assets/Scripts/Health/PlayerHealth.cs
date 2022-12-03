@@ -42,7 +42,7 @@ public class PlayerHealth : NetworkBehaviour
     private void Update()
     {
         playerIndex = OwnerClientId;
-        healthBar = FindObjectOfType<HealthBar>();
+        
 
     }
     public void DamageEnemy(int damage)
@@ -55,6 +55,7 @@ public class PlayerHealth : NetworkBehaviour
                 if(networkHealth.Value  > 0)
                 {
                     networkHealth.Value -= damage;
+                    
                     networkAnim.SetTrigger("Hit");
                     SetHealthClientRPC(networkHealth.Value);
                 }
@@ -86,11 +87,13 @@ public class PlayerHealth : NetworkBehaviour
         }
 
     }
-    public void StartBlocking()
+    [ServerRpc(RequireOwnership = false)]
+    public void StartBlockingServerRPC()
     {
         isblocking = true;
     }
-    public void StopBlocking()
+    [ServerRpc(RequireOwnership = false)]
+    public void StopBlockingServerRPC()
     {
         isblocking = false;
     }  
