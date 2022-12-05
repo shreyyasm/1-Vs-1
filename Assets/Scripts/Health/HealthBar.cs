@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
@@ -30,7 +31,8 @@ public class HealthBar : NetworkBehaviour
 	ulong playerIndex;
 
 	[SerializeField] InputField joinCode;
-	
+	[SerializeField] GameObject KOGameObject;
+
 	private void Awake()
 	{
 		if (instance == null)
@@ -59,7 +61,7 @@ public class HealthBar : NetworkBehaviour
 			HealthBarPosServerRPC();
 		}
 		
-
+	
 	}
     
 
@@ -130,6 +132,17 @@ public class HealthBar : NetworkBehaviour
 		SetEnemyHeathBar(1);
 	}
 
-	
+	[ServerRpc(RequireOwnership = false)]
+	public void KOTextServerRPC()
+    {
+		KOGameObject.SetActive(true);
+		SoundManager.Manager.PlaySFX(SoundManager.KO);
+	}
+	[ClientRpc]
+	public void KOTextClientRPC()
+	{
+		KOGameObject.SetActive(true);
+		SoundManager.Manager.PlaySFX(SoundManager.KO);
+	}
 
 }

@@ -54,10 +54,12 @@ public class PlayerHealth : NetworkBehaviour
             {
                 if(networkHealth.Value  > 0)
                 {
+
                     networkHealth.Value -= damage;
                     
                     networkAnim.SetTrigger("Hit");
                     SetHealthClientRPC(networkHealth.Value);
+                    
                 }
                 if(networkHealth.Value <= 0)
                 {
@@ -66,17 +68,20 @@ public class PlayerHealth : NetworkBehaviour
                     networkAnim.SetTrigger("Die");
                     AttackCaller.Instance.CheckPlayerDiedServerRPC();
                     AttackCaller.Instance.CheckPlayerDiedClientRPC();
+                    HealthBar.instance.KOTextServerRPC();     
                     StartCoroutine(ShowEndMenu());
                    
                 }
-            } 
+            }
+           
         }
      
     } 
     [ClientRpc]
     public void SetHealthClientRPC(int health)
     {
-        
+
+        SoundManager.Manager.PlaySFX(SoundManager.Hurt);
         if (playerIndex == 0)
         {  
             healthBar.SetPlayerHealth(health);
@@ -97,8 +102,15 @@ public class PlayerHealth : NetworkBehaviour
     {
         isblocking = false;
     }  
-   IEnumerator ShowEndMenu()
+    IEnumerator ShowEndMenu()
     {
+        
+        if (IsServer)
+            HealthBar.instance.KOTextClientRPC();
+
+        if (IsClient)
+            HealthBar.instance.KOTextServerRPC(); 
+
         yield return new WaitForSeconds(5f);
         if (IsServer)
             EndClientRPC();

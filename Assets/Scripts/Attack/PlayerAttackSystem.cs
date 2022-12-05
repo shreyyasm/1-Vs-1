@@ -32,6 +32,7 @@ public class PlayerAttackSystem : NetworkBehaviour
 
     [SerializeField] ulong playerIndex;
     [SerializeField] CharacterController controller;
+    
     struct AttackSystem : INetworkSerializable
     {
         public FixedString128Bytes message;
@@ -76,7 +77,10 @@ public class PlayerAttackSystem : NetworkBehaviour
     }
     public void Attack()
     {
-        if(IsOwner)
+       
+        if(IsClient)
+            SoundManager.Manager.PlaySFX(SoundManager.Punch);
+        if (IsOwner)
         {          
             anim.SetBool("StrafeForward", false);
             networkAnim.SetTrigger("Attack");
@@ -149,7 +153,8 @@ public class PlayerAttackSystem : NetworkBehaviour
             playerHitRef = playerHit;
             if (playerHit != null && isAttacking)
             {
-                if(IsServer)
+                
+                if (IsServer)
                 {                  
                         CheckPunchServerSide(0);
                 }

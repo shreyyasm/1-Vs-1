@@ -28,6 +28,7 @@ public class PlayerMovement : NetworkBehaviour
     NetworkAnimator networkAnim;
 
     public CharacterController controller;
+    public CapsuleCollider capsuleCollider;
     ulong playerIndex;
 
     
@@ -42,7 +43,7 @@ public class PlayerMovement : NetworkBehaviour
             instance = this;
         }
         
-        
+
     }
     public override void OnNetworkSpawn()
     {
@@ -51,20 +52,21 @@ public class PlayerMovement : NetworkBehaviour
             gameObject.AddComponent<CameraFollow>();
 
         }
-        if (IsClient)
-        {
-            //SetPositionServerRPC();
-            transform.position = spawnPositionServer;
-        }
+       
         if (IsServer)
         {
             SetClientPosition(0);
+            capsuleCollider.enabled = true;
+        }
+        if (IsClient)
+        {
+            if (IsServer) return;
+            //SetPositionServerRPC();
+            transform.position = spawnPositionServer;
+            capsuleCollider.enabled = true;
         }
     }
-    public void ClientConnected()
-    {
-        ClientHasSpawned();
-    }
+   
     private void Update()
     {
         cam = GameObject.FindObjectOfType<Camera>();

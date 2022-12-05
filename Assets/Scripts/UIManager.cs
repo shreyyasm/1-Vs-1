@@ -39,6 +39,7 @@ public class UIManager : NetworkBehaviour
             NetworkManager.Singleton.StartHost();
             UImanage.SetActive(false);
             PlayerUI.SetActive(true);
+            SoundManager.Manager.StopMusic();
 
             Logger.Instance.LogInfo("Host Connected");
             

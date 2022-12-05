@@ -15,6 +15,8 @@ public class AttackCaller : NetworkBehaviour
     bool clientJoined = false;
     bool playerDied = false;
     PlayerMovement playerMovement;
+
+    public GameObject countdown;
     private void Awake()
     {
         if(Instance == null)
@@ -24,8 +26,8 @@ public class AttackCaller : NetworkBehaviour
     }
     public override void OnNetworkSpawn()
     {
-        if(IsClient && !IsServer)
-        FindObjectOfType<PlayerMovement>().ClientHasSpawned();
+        
+        
 
     }
     private void Update()
@@ -40,7 +42,11 @@ public class AttackCaller : NetworkBehaviour
         if(clientJoined)
         {
             client = GameObject.FindGameObjectWithTag("Client").GetComponent<PlayerAttackSystem>();
+            //FindObjectOfType<PlayerMovement>().ClientHasSpawned();
             LoggerScreen.SetActive(false);
+            countdown.SetActive(true);
+            
+
         }
     
         if(playerDied)
